@@ -21,6 +21,16 @@ int main() {
     cout << "\nUsing setprecision and fixed:" << endl;
     cout << fixed << setprecision(4) << pi << endl;
 
+    std::string a, b;
+    std::cin >> a >> b;  // whitespace is skipped between words
+    std::cout << a << " | " << b << std::endl;
+
+
+ std::cin >> std::noskipws;
+    while (std::cin >> ch) {
+        std::cout << '[' << ch << ']';
+    } // for noskipws
+
     // scientific
     cout << "\nUsing scientific:" << endl;
     cout << scientific << pi << endl;
