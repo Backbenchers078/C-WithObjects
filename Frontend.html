@@ -1,0 +1,2639 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+   <meta charset="UTF-8">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <title>StockVision Pro - Advanced Market Intelligence Platform</title>
+
+   <script src="https://cdn.tailwindcss.com"></script>
+
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+   <style>
+
+       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+       body {
+
+           font-family: 'Inter', sans-serif;
+
+           background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+
+           min-height: 100vh;
+
+       }
+
+       .premium-gradient {
+
+           background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+
+       }
+
+       .glass-effect {
+
+           background: rgba(255, 255, 255, 0.05);
+
+           backdrop-filter: blur(20px);
+
+           border: 1px solid rgba(255, 255, 255, 0.1);
+
+       }
+
+       .premium-card {
+
+           background: rgba(255, 255, 255, 0.98);
+
+           backdrop-filter: blur(20px);
+
+           box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+
+           border: 1px solid rgba(255, 255, 255, 0.2);
+
+       }
+
+       .dark-card {
+
+           background: linear-gradient(145deg, #1e1e2e, #2a2a3e);
+
+           border: 1px solid rgba(255, 255, 255, 0.1);
+
+           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+
+       }
+
+       .glow-effect {
+
+           box-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+
+       }
+
+       .premium-button {
+
+           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+           box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+
+           transition: all 0.3s ease;
+
+       }
+
+       .premium-button:hover {
+
+           transform: translateY(-2px);
+
+           box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+
+       }
+
+       .metric-card {
+
+           background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+
+           border: 1px solid rgba(255, 255, 255, 0.8);
+
+           transition: all 0.3s ease;
+
+       }
+
+       .metric-card:hover {
+
+           transform: translateY(-2px);
+
+           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+       }
+
+       .pulse-glow {
+
+           animation: pulseGlow 3s ease-in-out infinite;
+
+       }
+
+       @keyframes pulseGlow {
+
+           0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.3); }
+
+           50% { box-shadow: 0 0 40px rgba(102, 126, 234, 0.6); }
+
+       }
+
+       .text-gradient {
+
+           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+           -webkit-background-clip: text;
+
+           -webkit-text-fill-color: transparent;
+
+           background-clip: text;
+
+       }
+
+       .premium-input {
+
+           background: rgba(255, 255, 255, 0.95);
+
+           border: 2px solid rgba(102, 126, 234, 0.2);
+
+           transition: all 0.3s ease;
+
+       }
+
+       .premium-input:focus {
+
+           border-color: #667eea;
+
+           box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+
+       }
+
+       .demo-badge {
+
+           background: linear-gradient(45deg, #ff6b6b, #feca57);
+
+           animation: demoGlow 2s ease-in-out infinite alternate;
+
+       }
+
+       @keyframes demoGlow {
+
+           0% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.5); }
+
+           100% { box-shadow: 0 0 30px rgba(254, 202, 87, 0.7); }
+
+       }
+
+       .risk-indicator {
+
+           background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444);
+
+       }
+
+       .volatility-meter {
+
+           background: conic-gradient(from 0deg, #10b981 0deg 120deg, #f59e0b 120deg 240deg, #ef4444 240deg 360deg);
+
+       }
+
+       .news-ticker {
+
+           animation: scroll 30s linear infinite;
+
+       }
+
+       @keyframes scroll {
+
+           0% { transform: translateX(100%); }
+
+           100% { transform: translateX(-100%); }
+
+       }
+
+       .chart-container {
+
+           position: relative;
+
+           height: 400px;
+
+       }
+
+       .loading-spinner {
+
+           animation: spin 1s linear infinite;
+
+       }
+
+       @keyframes spin {
+
+           from { transform: rotate(0deg); }
+
+           to { transform: rotate(360deg); }
+
+       }
+
+   </style>
+
+</head>
+
+<body class="text-white">
+
+   <!-- Demo Warning Banner -->
+
+   <div class="demo-badge text-white py-3 px-6 text-center font-bold text-sm">
+
+       ⚠️ DEMO PLATFORM - ALL DATA IS SIMULATED FOR EDUCATIONAL PURPOSES ONLY ⚠️
+
+   </div>
+
+ 
+
+   <!-- Header -->
+
+   <header class="premium-gradient text-white py-8 relative overflow-hidden">
+
+       <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+
+       <div class="container mx-auto px-6 relative z-10">
+
+           <div class="flex items-center justify-between">
+
+               <div class="flex items-center space-x-4">
+
+                   <div class="w-12 h-12 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-xl flex items-center justify-center glow-effect">
+
+                       <span class="text-3xl">📊</span>
+
+                   </div>
+
+                   <div>
+
+                       <h1 class="text-4xl font-black tracking-tight">StockVision Pro</h1>
+
+                       <p class="text-blue-100 text-sm font-medium">Advanced Market Intelligence Platform</p>
+
+                   </div>
+
+               </div>
+
+               <div class="hidden md:flex items-center space-x-6">
+
+                   <div class="text-right">
+
+                       <div class="text-sm text-blue-100">Market Status</div>
+
+                       <div id="marketStatus" class="text-lg font-bold">🟢 DEMO MODE</div>
+
+                   </div>
+
+                   <nav class="flex space-x-8">
+
+                       <a href="#" class="text-white hover:text-blue-200 transition-all duration-300 font-medium relative group">
+
+                           Dashboard
+
+                           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+
+                       </a>
+
+                       <a href="#" class="text-white hover:text-blue-200 transition-all duration-300 font-medium relative group">
+
+                           Analytics
+
+                           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+
+                       </a>
+
+                       <a href="#" class="text-white hover:text-blue-200 transition-all duration-300 font-medium relative group">
+
+                           Portfolio
+
+                           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+
+                       </a>
+
+                   </nav>
+
+               </div>
+
+           </div>
+
+       </div>
+
+   </header>
+
+ 
+
+   <!-- News Ticker -->
+
+   <div class="bg-gray-900 py-2 overflow-hidden">
+
+       <div class="news-ticker whitespace-nowrap text-sm text-gray-300">
+
+           📈 DEMO: AAPL up 2.3% • TSLA gains 5.6% on earnings • GOOGL announces AI breakthrough • Market volatility expected • Oil prices fluctuate • Tech sector showing strength • Crypto markets mixed • Federal Reserve meeting next week
+
+       </div>
+
+   </div>
+
+ 
+
+   <!-- Main Content -->
+
+   <main class="container mx-auto px-6 py-8">
+
+       <!-- Market Overview -->
+
+       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+
+           <div class="premium-card rounded-2xl p-6">
+
+               <div class="flex items-center justify-between mb-4">
+
+                   <div class="text-sm font-semibold text-gray-600">S&P 500</div>
+
+                   <span class="text-green-500 text-2xl">📈</span>
+
+               </div>
+
+               <div class="text-2xl font-bold text-gray-800" id="sp500">4,127.83</div>
+
+               <div class="text-sm text-green-600 font-medium">+0.85% (+34.21)</div>
+
+           </div>
+
+           <div class="premium-card rounded-2xl p-6">
+
+               <div class="flex items-center justify-between mb-4">
+
+                   <div class="text-sm font-semibold text-gray-600">NASDAQ</div>
+
+                   <span class="text-blue-500 text-2xl">💻</span>
+
+               </div>
+
+               <div class="text-2xl font-bold text-gray-800" id="nasdaq">12,658.19</div>
+
+               <div class="text-sm text-green-600 font-medium">+1.23% (+154.32)</div>
+
+           </div>
+
+           <div class="premium-card rounded-2xl p-6">
+
+               <div class="flex items-center justify-between mb-4">
+
+                   <div class="text-sm font-semibold text-gray-600">DOW JONES</div>
+
+                   <span class="text-purple-500 text-2xl">🏭</span>
+
+               </div>
+
+               <div class="text-2xl font-bold text-gray-800" id="dow">33,745.69</div>
+
+               <div class="text-sm text-red-600 font-medium">-0.12% (-41.23)</div>
+
+           </div>
+
+           <div class="premium-card rounded-2xl p-6">
+
+               <div class="flex items-center justify-between mb-4">
+
+                   <div class="text-sm font-semibold text-gray-600">VIX</div>
+
+                   <span class="text-orange-500 text-2xl">⚡</span>
+
+               </div>
+
+               <div class="text-2xl font-bold text-gray-800" id="vix">18.42</div>
+
+               <div class="text-sm text-orange-600 font-medium">+2.1% (+0.38)</div>
+
+           </div>
+
+       </div>
+
+ 
+
+       <!-- Stock Search -->
+
+       <div class="premium-card rounded-2xl p-8 mb-8 pulse-glow">
+
+           <div class="flex items-center space-x-3 mb-6">
+
+               <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+
+                   <span class="text-white text-lg">🔍</span>
+
+               </div>
+
+               <h2 class="text-3xl font-bold text-gradient">Advanced Stock Analysis</h2>
+
+               <div class="demo-badge text-white px-3 py-1 rounded-full text-xs font-bold ml-4">
+
+                   SIMULATED DATA
+
+               </div>
+
+           </div>
+
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+               <div class="md:col-span-2">
+
+                   <label class="block text-gray-700 text-sm font-semibold mb-2">Stock Symbol</label>
+
+                   <input type="text" id="stockSymbol" placeholder="Enter symbol (AAPL, GOOGL, TSLA, MSFT, AMZN, NVDA)"
+
+                          class="premium-input w-full px-6 py-4 rounded-xl text-gray-800 font-medium text-lg placeholder-gray-500">
+
+               </div>
+
+               <div class="flex flex-col justify-end space-y-3">
+
+                   <button onclick="analyzeStock()"
+
+                           class="premium-button text-white px-8 py-4 rounded-xl font-bold text-lg tracking-wide">
+
+                       🚀 Deep Analysis
+
+                   </button>
+
+                   <button onclick="addToWatchlist()"
+
+                           class="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-xl font-medium transition-colors">
+
+                       ⭐ Add to Watchlist
+
+                   </button>
+
+               </div>
+
+           </div>
+
+       </div>
+
+ 
+
+       <!-- Stock Info Display -->
+
+       <div id="stockInfo" class="hidden premium-card rounded-2xl p-8 mb-8">
+
+           <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
+
+               <div class="flex-1">
+
+                   <div class="flex items-center space-x-4 mb-4">
+
+                       <h3 id="stockName" class="text-4xl font-bold text-gray-800"></h3>
+
+                       <div class="demo-badge text-white px-3 py-1 rounded-full text-xs font-bold">
+
+                           DEMO
+
+                       </div>
+
+                   </div>
+
+                   <div class="flex items-center space-x-4 mb-4">
+
+                       <span id="stockSymbolDisplay" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg font-bold text-sm"></span>
+
+                       <span class="text-gray-500 text-sm">Simulated Market Data</span>
+
+                       <div id="lastUpdated" class="text-xs text-gray-400"></div>
+
+                   </div>
+
+                   <div class="flex items-center space-x-6">
+
+                       <div id="stockRating" class="flex items-center space-x-1">
+
+                           <span class="text-sm text-gray-600">Analyst Rating:</span>
+
+                           <div class="flex space-x-1" id="ratingStars"></div>
+
+                       </div>
+
+                       <div id="riskLevel" class="flex items-center space-x-2">
+
+                           <span class="text-sm text-gray-600">Risk Level:</span>
+
+                           <span class="px-2 py-1 rounded text-xs font-bold" id="riskBadge"></span>
+
+                       </div>
+
+                   </div>
+
+               </div>
+
+               <div class="text-right mt-6 lg:mt-0">
+
+                   <div id="stockPrice" class="text-6xl font-black text-green-600 mb-2"></div>
+
+                   <div id="stockChange" class="text-xl font-semibold mb-2"></div>
+
+                   <div class="text-sm text-gray-500">
+
+                       <span>Volume: </span><span id="volume" class="font-medium">-</span>
+
+                   </div>
+
+                   <div class="text-sm text-gray-500">
+
+                       <span>Avg Volume: </span><span id="avgVolume" class="font-medium">-</span>
+
+                   </div>
+
+               </div>
+
+           </div>
+
+           
+
+           <!-- Enhanced Key Metrics -->
+
+           <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-8">
+
+               <div class="metric-card p-4 rounded-xl">
+
+                   <div class="flex items-center space-x-2 mb-2">
+
+                       <span class="text-blue-500 text-lg">💰</span>
+
+                       <div class="text-xs font-semibold text-gray-600">Market Cap</div>
+
+                   </div>
+
+                   <div id="marketCap" class="text-lg font-bold text-gray-800">-</div>
+
+               </div>
+
+               <div class="metric-card p-4 rounded-xl">
+
+                   <div class="flex items-center space-x-2 mb-2">
+
+                       <span class="text-purple-500 text-lg">📊</span>
+
+                       <div class="text-xs font-semibold text-gray-600">P/E Ratio</div>
+
+                   </div>
+
+                   <div id="peRatio" class="text-lg font-bold text-gray-800">-</div>
+
+               </div>
+
+               <div class="metric-card p-4 rounded-xl">
+
+                   <div class="flex items-center space-x-2 mb-2">
+
+                       <span class="text-green-500 text-lg">📈</span>
+
+                       <div class="text-xs font-semibold text-gray-600">52W High</div>
+
+                   </div>
+
+                   <div id="weekHigh" class="text-lg font-bold text-gray-800">-</div>
+
+               </div>
+
+               <div class="metric-card p-4 rounded-xl">
+
+                   <div class="flex items-center space-x-2 mb-2">
+
+                       <span class="text-red-500 text-lg">📉</span>
+
+                       <div class="text-xs font-semibold text-gray-600">52W Low</div>
+
+                   </div>
+
+                   <div id="weekLow" class="text-lg font-bold text-gray-800">-</div>
+
+               </div>
+
+               <div class="metric-card p-4 rounded-xl">
+
+                   <div class="flex items-center space-x-2 mb-2">
+
+                       <span class="text-yellow-500 text-lg">💎</span>
+
+                       <div class="text-xs font-semibold text-gray-600">EPS</div>
+
+                   </div>
+
+                   <div id="eps" class="text-lg font-bold text-gray-800">-</div>
+
+               </div>
+
+               <div class="metric-card p-4 rounded-xl">
+
+                   <div class="flex items-center space-x-2 mb-2">
+
+                       <span class="text-indigo-500 text-lg">🎯</span>
+
+                       <div class="text-xs font-semibold text-gray-600">Beta</div>
+
+                   </div>
+
+                   <div id="beta" class="text-lg font-bold text-gray-800">-</div>
+
+               </div>
+
+           </div>
+
+ 
+
+           <!-- Volatility and Risk Meter -->
+
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+               <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6">
+
+                   <h4 class="text-lg font-bold text-gray-800 mb-4">Volatility Meter</h4>
+
+                   <div class="flex items-center justify-center">
+
+                       <div class="relative w-32 h-32">
+
+                           <div class="volatility-meter w-full h-full rounded-full"></div>
+
+                           <div class="absolute inset-0 flex items-center justify-center">
+
+                               <div class="bg-white rounded-full w-20 h-20 flex items-center justify-center">
+
+                                   <span id="volatilityScore" class="text-2xl font-bold text-gray-800">-</span>
+
+                               </div>
+
+                           </div>
+
+                       </div>
+
+                   </div>
+
+                   <div class="text-center mt-4">
+
+                       <div id="volatilityLevel" class="text-sm font-medium text-gray-600">-</div>
+
+                   </div>
+
+               </div>
+
+               <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6">
+
+                   <h4 class="text-lg font-bold text-gray-800 mb-4">Risk Assessment</h4>
+
+                   <div class="space-y-3">
+
+                       <div class="flex justify-between items-center">
+
+                           <span class="text-sm text-gray-600">Credit Risk</span>
+
+                           <div class="flex space-x-1">
+
+                               <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-gray-300 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-gray-300 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-gray-300 rounded-full"></div>
+
+                           </div>
+
+                       </div>
+
+                       <div class="flex justify-between items-center">
+
+                           <span class="text-sm text-gray-600">Market Risk</span>
+
+                           <div class="flex space-x-1">
+
+                               <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-gray-300 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-gray-300 rounded-full"></div>
+
+                           </div>
+
+                       </div>
+
+                       <div class="flex justify-between items-center">
+
+                           <span class="text-sm text-gray-600">Liquidity Risk</span>
+
+                           <div class="flex space-x-1">
+
+                               <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+
+                               <div class="w-3 h-3 bg-gray-300 rounded-full"></div>
+
+                           </div>
+
+                       </div>
+
+                   </div>
+
+               </div>
+
+           </div>
+
+       </div>
+
+ 
+
+       <!-- Chart and Prediction -->
+
+       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+           <!-- Enhanced Price Chart -->
+
+           <div class="lg:col-span-2 premium-card rounded-2xl p-8">
+
+               <div class="flex items-center justify-between mb-6">
+
+                   <div class="flex items-center space-x-3">
+
+                       <div class="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
+
+                           <span class="text-white text-lg">📈</span>
+
+                       </div>
+
+                       <h3 class="text-2xl font-bold text-gradient">Advanced Price Analytics</h3>
+
+                   </div>
+
+                   <div class="flex space-x-2">
+
+                       <button onclick="changeTimeframe('1D')" class="px-3 py-1 bg-blue-100 text-blue-800 rounded text-sm font-medium">1D</button>
+
+                       <button onclick="changeTimeframe('1W')" class="px-3 py-1 bg-gray-100 text-gray-800 rounded text-sm font-medium">1W</button>
+
+                       <button onclick="changeTimeframe('1M')" class="px-3 py-1 bg-gray-100 text-gray-800 rounded text-sm font-medium">1M</button>
+
+                       <button onclick="changeTimeframe('1Y')" class="px-3 py-1 bg-gray-100 text-gray-800 rounded text-sm font-medium">1Y</button>
+
+                   </div>
+
+               </div>
+
+               <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 chart-container">
+
+                   <canvas id="priceChart" width="400" height="300"></canvas>
+
+               </div>
+
+               <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+
+                   <div>
+
+                       <div class="text-sm text-gray-600">Support Level</div>
+
+                       <div id="supportLevel" class="text-lg font-bold text-green-600">-</div>
+
+                   </div>
+
+                   <div>
+
+                       <div class="text-sm text-gray-600">Current Price</div>
+
+                       <div id="currentPrice" class="text-lg font-bold text-gray-800">-</div>
+
+                   </div>
+
+                   <div>
+
+                       <div class="text-sm text-gray-600">Resistance Level</div>
+
+                       <div id="resistanceLevel" class="text-lg font-bold text-red-600">-</div>
+
+                   </div>
+
+               </div>
+
+           </div>
+
+ 
+
+           <!-- Enhanced Prediction Panel -->
+
+           <div class="dark-card rounded-2xl p-8 text-white">
+
+               <div class="flex items-center space-x-3 mb-6">
+
+                   <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center pulse-glow">
+
+                       <span class="text-white text-lg">🤖</span>
+
+                   </div>
+
+                   <h3 class="text-2xl font-bold">AI Predictions</h3>
+
+               </div>
+
+               <div id="predictionContent" class="space-y-4">
+
+                   <div class="text-center text-gray-400 py-12">
+
+                       <div class="text-6xl mb-4 pulse-glow">🧠</div>
+
+                       <p class="text-lg font-medium">Advanced AI Analysis</p>
+
+                       <p class="text-sm opacity-75 mt-2">Select a stock to unlock predictions</p>
+
+                   </div>
+
+               </div>
+
+               
+
+               <!-- AI Confidence Meter -->
+
+               <div id="aiConfidence" class="hidden mt-6 p-4 bg-white bg-opacity-10 rounded-xl">
+
+                   <div class="text-sm text-gray-300 mb-2">Overall AI Confidence</div>
+
+                   <div class="flex items-center space-x-3">
+
+                       <div class="flex-1 bg-gray-700 rounded-full h-3">
+
+                           <div id="confidenceBar" class="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-1000" style="width: 0%"></div>
+
+                       </div>
+
+                       <span id="confidencePercent" class="text-white font-bold">0%</span>
+
+                   </div>
+
+               </div>
+
+           </div>
+
+       </div>
+
+ 
+
+       <!-- Enhanced Analysis Tools -->
+
+       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+
+           <!-- Technical Indicators -->
+
+           <div class="premium-card rounded-2xl p-8">
+
+               <div class="flex items-center space-x-3 mb-6">
+
+                   <div class="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+
+                       <span class="text-white text-lg">⚡</span>
+
+                   </div>
+
+                   <h3 class="text-2xl font-bold text-gradient">Technical Indicators</h3>
+
+               </div>
+
+               <div id="technicalIndicators" class="space-y-4">
+
+                   <div class="flex justify-between items-center py-3 px-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
+
+                       <div class="flex items-center space-x-3">
+
+                           <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+
+                           <div>
+
+                               <div class="text-sm font-semibold text-gray-700">RSI (14)</div>
+
+                               <div class="text-xs text-gray-500">Relative Strength</div>
+
+                           </div>
+
+                       </div>
+
+                       <div class="text-right">
+
+                           <div class="font-bold text-gray-800 text-lg">-</div>
+
+                           <div class="text-xs text-gray-500" id="rsiSignal">-</div>
+
+                       </div>
+
+                   </div>
+
+                   <div class="flex justify-between items-center py-3 px-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
+
+                       <div class="flex items-center space-x-3">
+
+                           <div class="w-3 h-3 bg-purple-500 rounded-full"></div>
+
+                           <div>
+
+                               <div class="text-sm font-semibold text-gray-700">MACD</div>
+
+                               <div class="text-xs text-gray-500">Momentum</div>
+
+                           </div>
+
+                       </div>
+
+                       <div class="text-right">
+
+                           <div class="font-bold text-gray-800 text-lg">-</div>
+
+                           <div class="text-xs text-gray-500" id="macdSignal">-</div>
+
+                       </div>
+
+                   </div>
+
+                   <div class="flex justify-between items-center py-3 px-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
+
+                       <div class="flex items-center space-x-3">
+
+                           <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+
+                           <div>
+
+                               <div class="text-sm font-semibold text-gray-700">SMA (50)</div>
+
+                               <div class="text-xs text-gray-500">Moving Average</div>
+
+                           </div>
+
+                       </div>
+
+                       <div class="text-right">
+
+                           <div class="font-bold text-gray-800 text-lg">-</div>
+
+                           <div class="text-xs text-gray-500" id="smaSignal">-</div>
+
+                       </div>
+
+                   </div>
+
+                   <div class="flex justify-between items-center py-3 px-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
+
+                       <div class="flex items-center space-x-3">
+
+                           <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+
+                           <div>
+
+                               <div class="text-sm font-semibold text-gray-700">Bollinger Bands</div>
+
+                               <div class="text-xs text-gray-500">Volatility</div>
+
+                           </div>
+
+                       </div>
+
+                       <div class="text-right">
+
+                           <div class="font-bold text-gray-800 text-lg">-</div>
+
+                           <div class="text-xs text-gray-500" id="bbSignal">-</div>
+
+                       </div>
+
+                   </div>
+
+               </div>
+
+           </div>
+
+ 
+
+           <!-- Market Sentiment -->
+
+           <div class="dark-card rounded-2xl p-8 text-white">
+
+               <div class="flex items-center space-x-3 mb-6">
+
+                   <div class="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
+
+                       <span class="text-white text-lg">💭</span>
+
+                   </div>
+
+                   <h3 class="text-2xl font-bold">Market Sentiment</h3>
+
+               </div>
+
+               <div id="marketSentiment" class="space-y-6">
+
+                   <div class="flex items-center justify-between p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
+
+                       <span class="text-gray-300 font-medium">Overall Sentiment</span>
+
+                       <span id="sentimentScore" class="px-4 py-2 rounded-full text-sm font-bold">Neutral</span>
+
+                   </div>
+
+                   <div class="space-y-4">
+
+                       <div>
+
+                           <div class="flex justify-between text-sm font-medium mb-2">
+
+                               <span class="text-green-400">🐂 Bullish Sentiment</span>
+
+                               <span id="bullishPercent" class="text-white">-</span>
+
+                           </div>
+
+                           <div class="w-full bg-gray-700 rounded-full h-3">
+
+                               <div id="bullishBar" class="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+
+                           </div>
+
+                       </div>
+
+                       <div>
+
+                           <div class="flex justify-between text-sm font-medium mb-2">
+
+                               <span class="text-red-400">🐻 Bearish Sentiment</span>
+
+                               <span id="bearishPercent" class="text-white">-</span>
+
+                           </div>
+
+                           <div class="w-full bg-gray-700 rounded-full h-3">
+
+                               <div id="bearishBar" class="bg-gradient-to-r from-red-400 to-red-600 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+
+                           </div>
+
+                       </div>
+
+                       <div>
+
+                           <div class="flex justify-between text-sm font-medium mb-2">
+
+                               <span class="text-gray-400">😐 Neutral Sentiment</span>
+
+                               <span id="neutralPercent" class="text-white">-</span>
+
+                           </div>
+
+                           <div class="w-full bg-gray-700 rounded-full h-3">
+
+                               <div id="neutralBar" class="bg-gradient-to-r from-gray-400 to-gray-600 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+
+                           </div>
+
+                       </div>
+
+                   </div>
+
+               </div>
+
+               
+
+               <!-- Social Media Sentiment -->
+
+               <div class="mt-6 p-4 bg-white bg-opacity-5 rounded-xl">
+
+                   <h4 class="text-lg font-bold mb-3">Social Media Buzz</h4>
+
+                   <div class="space-y-2">
+
+                       <div class="flex justify-between text-sm">
+
+                           <span class="text-gray-300">Twitter Mentions</span>
+
+                           <span id="twitterMentions" class="text-white font-medium">-</span>
+
+                       </div>
+
+                       <div class="flex justify-between text-sm">
+
+                           <span class="text-gray-300">Reddit Posts</span>
+
+                           <span id="redditPosts" class="text-white font-medium">-</span>
+
+                       </div>
+
+                       <div class="flex justify-between text-sm">
+
+                           <span class="text-gray-300">News Articles</span>
+
+                           <span id="newsArticles" class="text-white font-medium">-</span>
+
+                       </div>
+
+                   </div>
+
+               </div>
+
+           </div>
+
+ 
+
+           <!-- Financial Health -->
+
+           <div class="premium-card rounded-2xl p-8">
+
+               <div class="flex items-center space-x-3 mb-6">
+
+                   <div class="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+
+                       <span class="text-white text-lg">🏥</span>
+
+                   </div>
+
+                   <h3 class="text-2xl font-bold text-gradient">Financial Health</h3>
+
+               </div>
+
+               <div id="financialHealth" class="space-y-4">
+
+                   <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4">
+
+                       <div class="flex justify-between items-center mb-2">
+
+                           <span class="text-sm font-semibold text-gray-700">Debt-to-Equity</span>
+
+                           <span id="debtToEquity" class="font-bold text-gray-800">-</span>
+
+                       </div>
+
+                       <div class="w-full bg-gray-300 rounded-full h-2">
+
+                           <div id="debtBar" class="bg-gradient-to-r from-green-500 to-red-500 h-2 rounded-full" style="width: 0%"></div>
+
+                       </div>
+
+                   </div>
+
+                   <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4">
+
+                       <div class="flex justify-between items-center mb-2">
+
+                           <span class="text-sm font-semibold text-gray-700">Current Ratio</span>
+
+                           <span id="currentRatio" class="font-bold text-gray-800">-</span>
+
+                       </div>
+
+                       <div class="w-full bg-gray-300 rounded-full h-2">
+
+                           <div id="currentBar" class="bg-gradient-to-r from-red-500 to-green-500 h-2 rounded-full" style="width: 0%"></div>
+
+                       </div>
+
+                   </div>
+
+                   <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4">
+
+                       <div class="flex justify-between items-center mb-2">
+
+                           <span class="text-sm font-semibold text-gray-700">ROE</span>
+
+                           <span id="roe" class="font-bold text-gray-800">-</span>
+
+                       </div>
+
+                       <div class="w-full bg-gray-300 rounded-full h-2">
+
+                           <div id="roeBar" class="bg-gradient-to-r from-red-500 to-green-500 h-2 rounded-full" style="width: 0%"></div>
+
+                       </div>
+
+                   </div>
+
+                   <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4">
+
+                       <div class="flex justify-between items-center mb-2">
+
+                           <span class="text-sm font-semibold text-gray-700">Profit Margin</span>
+
+                           <span id="profitMargin" class="font-bold text-gray-800">-</span>
+
+                       </div>
+
+                       <div class="w-full bg-gray-300 rounded-full h-2">
+
+                           <div id="profitBar" class="bg-gradient-to-r from-red-500 to-green-500 h-2 rounded-full" style="width: 0%"></div>
+
+                       </div>
+
+                   </div>
+
+               </div>
+
+               
+
+               <!-- Financial Score -->
+
+               <div class="mt-6 text-center">
+
+                   <div class="text-sm text-gray-600 mb-2">Financial Health Score</div>
+
+                   <div class="relative w-24 h-24 mx-auto">
+
+                       <svg class="w-24 h-24 transform -rotate-90" viewBox="0 0 36 36">
+
+                           <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+
+                                 fill="none" stroke="#e5e7eb" stroke-width="3"/>
+
+                           <path id="healthScoreCircle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+
+                                 fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="0, 100"/>
+
+                       </svg>
+
+                       <div class="absolute inset-0 flex items-center justify-center">
+
+                           <span id="healthScore" class="text-2xl font-bold text-gray-800">-</span>
+
+                       </div>
+
+                   </div>
+
+               </div>
+
+           </div>
+
+       </div>
+
+ 
+
+       <!-- Watchlist -->
+
+       <div class="premium-card rounded-2xl p-8 mt-8">
+
+           <div class="flex items-center justify-between mb-6">
+
+               <div class="flex items-center space-x-3">
+
+                   <div class="w-8 h-8 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-lg flex items-center justify-center">
+
+                       <span class="text-white text-lg">⭐</span>
+
+                   </div>
+
+                   <h3 class="text-2xl font-bold text-gradient">Your Watchlist</h3>
+
+               </div>
+
+               <button onclick="clearWatchlist()" class="text-red-600 hover:text-red-700 text-sm font-medium">
+
+                   Clear All
+
+               </button>
+
+           </div>
+
+           <div id="watchlistContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+               <div class="text-center text-gray-500 py-8 col-span-full">
+
+                   <div class="text-4xl mb-2">📋</div>
+
+                   <p>Your watchlist is empty. Add stocks to track them here.</p>
+
+               </div>
+
+           </div>
+
+       </div>
+
+ 
+
+       <!-- Enhanced Disclaimer -->
+
+       <div class="glass-effect rounded-2xl p-8 mt-12 border border-white border-opacity-20">
+
+           <div class="flex items-start space-x-4">
+
+               <div class="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0">
+
+                   <span class="text-white text-2xl">⚠️</span>
+
+               </div>
+
+               <div>
+
+                   <h4 class="font-bold text-white text-xl mb-3">Professional Disclaimer</h4>
+
+                   <p class="text-gray-300 leading-relaxed mb-4">
+
+                       This is a premium demonstration platform featuring simulated market data and AI-powered analytics. All displayed stock prices, predictions, technical analysis, and financial metrics are generated for educational and demonstration purposes only. This platform should not be used for actual investment decisions.
+
+                   </p>
+
+                   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-400">
+
+                       <div class="flex items-center space-x-2">
+
+                           <span class="w-2 h-2 bg-red-400 rounded-full"></span>
+
+                           <span>No Real Market Data</span>
+
+                       </div>
+
+                       <div class="flex items-center space-x-2">
+
+                           <span class="w-2 h-2 bg-yellow-400 rounded-full"></span>
+
+                           <span>Simulated AI Predictions</span>
+
+                       </div>
+
+                       <div class="flex items-center space-x-2">
+
+                           <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+
+                           <span>Educational Purpose Only</span>
+
+                       </div>
+
+                   </div>
+
+                   <p class="text-gray-400 text-sm mt-4">
+
+                       Always consult with qualified financial advisors and conduct comprehensive research before making any investment choices. Past performance does not guarantee future results.
+
+                   </p>
+
+               </div>
+
+           </div>
+
+       </div>
+
+   </main>
+
+ 
+
+   <script>
+
+       let priceChart = null;
+
+       let watchlist = [];
+
+       let currentTimeframe = '1D';
+
+       
+
+       // Enhanced stock database with more detailed information
+
+       const stockDatabase = {
+
+           'AAPL': {
+
+               name: 'Apple Inc.',
+
+               price: 175.43,
+
+               change: 2.34,
+
+               changePercent: 1.35,
+
+               marketCap: '2.75T',
+
+               peRatio: '28.5',
+
+               weekHigh: '198.23',
+
+               weekLow: '124.17',
+
+               eps: '6.15',
+
+               beta: '1.24',
+
+               volume: '52.3M',
+
+               avgVolume: '58.1M',
+
+               sector: 'Technology',
+
+               industry: 'Consumer Electronics'
+
+           },
+
+           'GOOGL': {
+
+               name: 'Alphabet Inc.',
+
+               price: 138.21,
+
+               change: -1.87,
+
+               changePercent: -1.33,
+
+               marketCap: '1.73T',
+
+               peRatio: '25.8',
+
+               weekHigh: '151.55',
+
+               weekLow: '83.34',
+
+               eps: '5.61',
+
+               beta: '1.05',
+
+               volume: '28.7M',
+
+               avgVolume: '31.2M',
+
+               sector: 'Technology',
+
+               industry: 'Internet Services'
+
+           },
+
+           'TSLA': {
+
+               name: 'Tesla Inc.',
+
+               price: 248.50,
+
+               change: 5.67,
+
+               changePercent: 2.34,
+
+               marketCap: '789B',
+
+               peRatio: '65.2',
+
+               weekHigh: '299.29',
+
+               weekLow: '101.81',
+
+               eps: '3.62',
+
+               beta: '2.11',
+
+               volume: '89.4M',
+
+               avgVolume: '95.7M',
+
+               sector: 'Consumer Cyclical',
+
+               industry: 'Auto Manufacturers'
+
+           },
+
+           'MSFT': {
+
+               name: 'Microsoft Corporation',
+
+               price: 378.85,
+
+               change: 3.21,
+
+               changePercent: 0.85,
+
+               marketCap: '2.81T',
+
+               peRatio: '32.1',
+
+               weekHigh: '384.30',
+
+               weekLow: '213.43',
+
+               eps: '11.05',
+
+               beta: '0.89',
+
+               volume: '22.1M',
+
+               avgVolume: '25.8M',
+
+               sector: 'Technology',
+
+               industry: 'Software'
+
+           },
+
+           'AMZN': {
+
+               name: 'Amazon.com Inc.',
+
+               price: 145.86,
+
+               change: -2.14,
+
+               changePercent: -1.45,
+
+               marketCap: '1.51T',
+
+               peRatio: '45.7',
+
+               weekHigh: '170.00',
+
+               weekLow: '81.43',
+
+               eps: '2.90',
+
+               beta: '1.33',
+
+               volume: '41.2M',
+
+               avgVolume: '48.9M',
+
+               sector: 'Consumer Cyclical',
+
+               industry: 'Internet Retail'
+
+           },
+
+           'NVDA': {
+
+               name: 'NVIDIA Corporation',
+
+               price: 875.28,
+
+               change: 15.67,
+
+               changePercent: 1.82,
+
+               marketCap: '2.16T',
+
+               peRatio: '73.4',
+
+               weekHigh: '950.02',
+
+               weekLow: '180.96',
+
+               eps: '11.93',
+
+               beta: '1.68',
+
+               volume: '35.7M',
+
+               avgVolume: '42.3M',
+
+               sector: 'Technology',
+
+               industry: 'Semiconductors'
+
+           }
+
+       };
+
+ 
+
+       // Update market indices periodically
+
+       function updateMarketIndices() {
+
+           const indices = ['sp500', 'nasdaq', 'dow', 'vix'];
+
+           indices.forEach(index => {
+
+               const element = document.getElementById(index);
+
+               if (element) {
+
+                   const currentValue = parseFloat(element.textContent.replace(/,/g, ''));
+
+                   const change = (Math.random() - 0.5) * 10;
+
+                   const newValue = currentValue + change;
+
+                   element.textContent = newValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+               }
+
+           });
+
+       }
+
+ 
+
+       function analyzeStock() {
+
+           const symbol = document.getElementById('stockSymbol').value.toUpperCase().trim();
+
+           
+
+           if (!symbol) {
+
+               alert('Please enter a stock symbol');
+
+               return;
+
+           }
+
+ 
+
+           // Show loading state
+
+           const button = event.target;
+
+           const originalText = button.textContent;
+
+           button.innerHTML = '<div class="loading-spinner w-5 h-5 border-2 border-white border-t-transparent rounded-full inline-block mr-2"></div>Analyzing...';
+
+           button.disabled = true;
+
+ 
+
+           setTimeout(() => {
+
+               const stockData = stockDatabase[symbol] || generateRandomStock(symbol);
+
+               displayStockInfo(symbol, stockData);
+
+               createPriceChart(symbol);
+
+               generatePrediction(symbol, stockData);
+
+               updateTechnicalIndicators(stockData);
+
+               updateMarketSentiment();
+
+               updateFinancialHealth(stockData);
+
+               updateLastUpdated();
+
+               
+
+               button.innerHTML = originalText;
+
+               button.disabled = false;
+
+           }, 2000);
+
+       }
+
+ 
+
+       function generateRandomStock(symbol) {
+
+           const basePrice = Math.random() * 300 + 50;
+
+           const change = (Math.random() - 0.5) * 15;
+
+           const sectors = ['Technology', 'Healthcare', 'Finance', 'Energy', 'Consumer Goods'];
+
+           const industries = ['Software', 'Biotechnology', 'Banking', 'Oil & Gas', 'Retail'];
+
+           
+
+           return {
+
+               name: `${symbol} Corporation`,
+
+               price: basePrice,
+
+               change: change,
+
+               changePercent: (change / basePrice) * 100,
+
+               marketCap: `${(Math.random() * 800 + 100).toFixed(0)}B`,
+
+               peRatio: (Math.random() * 50 + 10).toFixed(1),
+
+               weekHigh: (basePrice * (1 + Math.random() * 0.4)).toFixed(2),
+
+               weekLow: (basePrice * (1 - Math.random() * 0.4)).toFixed(2),
+
+               eps: (Math.random() * 10 + 1).toFixed(2),
+
+               beta: (Math.random() * 2 + 0.5).toFixed(2),
+
+               volume: `${(Math.random() * 100 + 10).toFixed(1)}M`,
+
+               avgVolume: `${(Math.random() * 120 + 15).toFixed(1)}M`,
+
+               sector: sectors[Math.floor(Math.random() * sectors.length)],
+
+               industry: industries[Math.floor(Math.random() * industries.length)]
+
+           };
+
+       }
+
+ 
+
+       function displayStockInfo(symbol, data) {
+
+           document.getElementById('stockInfo').classList.remove('hidden');
+
+           document.getElementById('stockName').textContent = data.name;
+
+           document.getElementById('stockSymbolDisplay').textContent = symbol;
+
+           document.getElementById('stockPrice').textContent = `$${data.price.toFixed(2)}`;
+
+           
+
+           const changeElement = document.getElementById('stockChange');
+
+           const changeText = `${data.change >= 0 ? '+' : ''}${data.change.toFixed(2)} (${data.changePercent.toFixed(2)}%)`;
+
+           changeElement.textContent = changeText;
+
+           changeElement.className = data.change >= 0 ? 'text-xl font-semibold mb-2 text-green-600' : 'text-xl font-semibold mb-2 text-red-600';
+
+           
+
+           // Update all metrics
+
+           document.getElementById('marketCap').textContent = data.marketCap;
+
+           document.getElementById('peRatio').textContent = data.peRatio;
+
+           document.getElementById('weekHigh').textContent = `$${data.weekHigh}`;
+
+           document.getElementById('weekLow').textContent = `$${data.weekLow}`;
+
+           document.getElementById('eps').textContent = `$${data.eps}`;
+
+           document.getElementById('beta').textContent = data.beta;
+
+           document.getElementById('volume').textContent = data.volume;
+
+           document.getElementById('avgVolume').textContent = data.avgVolume;
+
+           
+
+           // Update rating and risk
+
+           updateStockRating(data);
+
+           updateRiskLevel(data);
+
+           updateVolatilityMeter(data);
+
+           
+
+           // Update support and resistance levels
+
+           const support = (data.price * 0.95).toFixed(2);
+
+           const resistance = (data.price * 1.05).toFixed(2);
+
+           document.getElementById('supportLevel').textContent = `$${support}`;
+
+           document.getElementById('currentPrice').textContent = `$${data.price.toFixed(2)}`;
+
+           document.getElementById('resistanceLevel').textContent = `$${resistance}`;
+
+       }
+
+ 
+
+       function updateStockRating(data) {
+
+           const rating = Math.floor(Math.random() * 5) + 1;
+
+           const ratingContainer = document.getElementById('ratingStars');
+
+           ratingContainer.innerHTML = '';
+
+           
+
+           for (let i = 1; i <= 5; i++) {
+
+               const star = document.createElement('span');
+
+               star.textContent = i <= rating ? '⭐' : '☆';
+
+               star.className = 'text-yellow-500';
+
+               ratingContainer.appendChild(star);
+
+           }
+
+       }
+
+ 
+
+       function updateRiskLevel(data) {
+
+           const beta = parseFloat(data.beta);
+
+           let riskLevel, riskClass;
+
+           
+
+           if (beta < 0.8) {
+
+               riskLevel = 'Low Risk';
+
+               riskClass = 'bg-green-100 text-green-800';
+
+           } else if (beta < 1.3) {
+
+               riskLevel = 'Medium Risk';
+
+               riskClass = 'bg-yellow-100 text-yellow-800';
+
+           } else {
+
+               riskLevel = 'High Risk';
+
+               riskClass = 'bg-red-100 text-red-800';
+
+           }
+
+           
+
+           const riskBadge = document.getElementById('riskBadge');
+
+           riskBadge.textContent = riskLevel;
+
+           riskBadge.className = `px-2 py-1 rounded text-xs font-bold ${riskClass}`;
+
+       }
+
+ 
+
+       function updateVolatilityMeter(data) {
+
+           const beta = parseFloat(data.beta);
+
+           const volatilityScore = Math.min(Math.floor(beta * 50), 99);
+
+           
+
+           document.getElementById('volatilityScore').textContent = volatilityScore;
+
+           
+
+           let volatilityLevel;
+
+           if (volatilityScore < 30) volatilityLevel = 'Low Volatility';
+
+           else if (volatilityScore < 70) volatilityLevel = 'Moderate Volatility';
+
+           else volatilityLevel = 'High Volatility';
+
+           
+
+           document.getElementById('volatilityLevel').textContent = volatilityLevel;
+
+       }
+
+ 
+
+       function createPriceChart(symbol) {
+
+           const ctx = document.getElementById('priceChart').getContext('2d');
+
+           
+
+           // Generate more sophisticated historical data
+
+           const days = currentTimeframe === '1D' ? 24 : currentTimeframe === '1W' ? 7 : currentTimeframe === '1M' ? 30 : 365;
+
+           const basePrice = stockDatabase[symbol]?.price || 150;
+
+           const historicalData = [];
+
+           const labels = [];
+
+           
+
+           for (let i = days; i >= 0; i--) {
+
+               const date = new Date();
+
+               if (currentTimeframe === '1D') {
+
+                   date.setHours(date.getHours() - i);
+
+                   labels.push(date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
+
+               } else {
+
+                   date.setDate(date.getDate() - i);
+
+                   labels.push(date.toLocaleDateString());
+
+               }
+
+               
+
+               const trend = Math.sin(i / 10) * 5;
+
+               const noise = (Math.random() - 0.5) * 10;
+
+               const price = basePrice + trend + noise + (Math.random() - 0.5) * 20;
+
+               historicalData.push(Math.max(price, 1));
+
+           }
+
+           
+
+           // Generate prediction data
+
+           const predictionData = [];
+
+           const lastPrice = historicalData[historicalData.length - 1];
+
+           for (let i = 1; i <= 7; i++) {
+
+               const trend = (Math.random() - 0.4) * 3;
+
+               const prediction = lastPrice + (trend * i) + (Math.sin(i) * 2);
+
+               predictionData.push(Math.max(prediction, 1));
+
+               
+
+               const futureDate = new Date();
+
+               futureDate.setDate(futureDate.getDate() + i);
+
+               labels.push(`${futureDate.toLocaleDateString()} (P)`);
+
+           }
+
+ 
+
+           if (priceChart) {
+
+               priceChart.destroy();
+
+           }
+
+ 
+
+           priceChart = new Chart(ctx, {
+
+               type: 'line',
+
+               data: {
+
+                   labels: labels,
+
+                   datasets: [{
+
+                       label: 'Historical Price',
+
+                       data: historicalData,
+
+                       borderColor: '#3B82F6',
+
+                       backgroundColor: 'rgba(59, 130, 246, 0.1)',
+
+                       tension: 0.4,
+
+                       fill: true,
+
+                       pointRadius: 0,
+
+                       pointHoverRadius: 5
+
+                   }, {
+
+                       label: 'AI Prediction',
+
+                       data: [...Array(historicalData.length - 1).fill(null), historicalData[historicalData.length - 1], ...predictionData],
+
+                       borderColor: '#EF4444',
+
+                       backgroundColor: 'rgba(239, 68, 68, 0.1)',
+
+                       borderDash: [5, 5],
+
+                       tension: 0.4,
+
+                       fill: false,
+
+                       pointRadius: 0,
+
+                       pointHoverRadius: 5
+
+                   }]
+
+               },
+
+               options: {
+
+                   responsive: true,
+
+                   maintainAspectRatio: false,
+
+                   interaction: {
+
+                       intersect: false,
+
+                       mode: 'index'
+
+                   },
+
+                   scales: {
+
+                       y: {
+
+                           beginAtZero: false,
+
+                           ticks: {
+
+                               callback: function(value) {
+
+                                   return '$' + value.toFixed(2);
+
+                               }
+
+                           },
+
+                           grid: {
+
+                               color: 'rgba(0, 0, 0, 0.1)'
+
+                           }
+
+                       },
+
+                       x: {
+
+                           grid: {
+
+                               color: 'rgba(0, 0, 0, 0.1)'
+
+                           }
+
+                       }
+
+                   },
+
+                   plugins: {
+
+                       legend: {
+
+                           position: 'top',
+
+                           labels: {
+
+                               usePointStyle: true,
+
+                               padding: 20
+
+                           }
+
+                       },
+
+                       tooltip: {
+
+                           backgroundColor: 'rgba(0, 0, 0, 0.8)',
+
+                           titleColor: 'white',
+
+                           bodyColor: 'white',
+
+                           borderColor: 'rgba(255, 255, 255, 0.1)',
+
+                           borderWidth: 1
+
+                       }
+
+                   }
+
+               }
+
+           });
+
+       }
+
+ 
+
+       function generatePrediction(symbol, data) {
+
+           const predictions = [
+
+               {
+
+                   period: '1 Week',
+
+                   direction: Math.random() > 0.4 ? 'Bullish' : Math.random() > 0.5 ? 'Bearish' : 'Neutral',
+
+                   confidence: Math.floor(Math.random() * 30 + 60),
+
+                   target: (data.price * (1 + (Math.random() - 0.5) * 0.1)).toFixed(2),
+
+                   factors: ['Technical momentum', 'Volume analysis', 'Market sentiment']
+
+               },
+
+               {
+
+                   period: '1 Month',
+
+                   direction: Math.random() > 0.3 ? 'Bullish' : Math.random() > 0.6 ? 'Bearish' : 'Neutral',
+
+                   confidence: Math.floor(Math.random() * 25 + 50),
+
+                   target: (data.price * (1 + (Math.random() - 0.5) * 0.2)).toFixed(2),
+
+                   factors: ['Earnings outlook', 'Sector trends', 'Economic indicators']
+
+               },
+
+               {
+
+                   period: '3 Months',
+
+                   direction: Math.random() > 0.35 ? 'Bullish' : Math.random() > 0.55 ? 'Bearish' : 'Neutral',
+
+                   confidence: Math.floor(Math.random() * 20 + 45),
+
+                   target: (data.price * (1 + (Math.random() - 0.5) * 0.3)).toFixed(2),
+
+                   factors: ['Fundamental analysis', 'Industry outlook', 'Macro trends']
+
+               }
+
+           ];
+
+ 
+
+           const predictionHTML = predictions.map(pred => `
+
+               <div class="bg-white bg-opacity-10 backdrop-blur-sm border border-white border-opacity-20 rounded-xl p-6 mb-4">
+
+                   <div class="flex justify-between items-center mb-4">
+
+                       <span class="font-bold text-white text-lg">${pred.period}</span>
+
+                       <span class="px-3 py-1 rounded-lg text-sm font-bold ${
+
+                           pred.direction === 'Bullish' ? 'bg-green-500 text-white' :
+
+                           pred.direction === 'Bearish' ? 'bg-red-500 text-white' :
+
+                           'bg-gray-500 text-white'
+
+                       }">${pred.direction}</span>
+
+                   </div>
+
+                   <div class="grid grid-cols-2 gap-4 mb-4">
+
+                       <div>
+
+                           <div class="text-gray-300 text-sm">Target Price</div>
+
+                           <div class="text-white font-bold text-lg">$${pred.target}</div>
+
+                       </div>
+
+                       <div>
+
+                           <div class="text-gray-300 text-sm">AI Confidence</div>
+
+                           <div class="text-white font-bold text-lg">${pred.confidence}%</div>
+
+                       </div>
+
+                   </div>
+
+                   <div class="w-full bg-gray-700 rounded-full h-2 mb-4">
+
+                       <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-700" style="width: ${pred.confidence}%"></div>
+
+                   </div>
+
+                   <div class="text-xs text-gray-400">
+
+                       <div class="mb-1">Key Factors:</div>
+
+                       <div class="flex flex-wrap gap-1">
+
+                           ${pred.factors.map(factor => `<span class="bg-white bg-opacity-10 px-2 py-1 rounded text-xs">${factor}</span>`).join('')}
+
+                       </div>
+
+                   </div>
+
+               </div>
+
+           `).join('');
+
+ 
+
+           document.getElementById('predictionContent').innerHTML = predictionHTML;
+
+           
+
+           // Update AI confidence meter
+
+           const overallConfidence = Math.floor(predictions.reduce((sum, pred) => sum + pred.confidence, 0) / predictions.length);
+
+           document.getElementById('aiConfidence').classList.remove('hidden');
+
+           document.getElementById('confidenceBar').style.width = `${overallConfidence}%`;
+
+           document.getElementById('confidencePercent').textContent = `${overallConfidence}%`;
+
+       }
+
+ 
+
+       function updateTechnicalIndicators(data) {
+
+           const indicators = [
+
+               {
+
+                   value: (Math.random() * 60 + 20).toFixed(1),
+
+                   signal: Math.random() > 0.5 ? 'Oversold' : Math.random() > 0.5 ? 'Overbought' : 'Neutral',
+
+                   element: 0
+
+               },
+
+               {
+
+                   value: (Math.random() * 4 - 2).toFixed(3),
+
+                   signal: Math.random() > 0.5 ? 'Bullish Cross' : Math.random() > 0.5 ? 'Bearish Cross' : 'Sideways',
+
+                   element: 1
+
+               },
+
+               {
+
+                   value: '$' + (data.price * (0.9 + Math.random() * 0.2)).toFixed(2),
+
+                   signal: data.price > (data.price * 0.95) ? 'Above SMA' : 'Below SMA',
+
+                   element: 2
+
+               },
+
+               {
+
+                   value: Math.random() > 0.33 ? 'Squeeze' : Math.random() > 0.5 ? 'Expansion' : 'Normal',
+
+                   signal: Math.random() > 0.5 ? 'Breakout Expected' : 'Range Bound',
+
+                   element: 3
+
+               }
+
+           ];
+
+ 
+
+           const indicatorElements = document.querySelectorAll('#technicalIndicators .font-bold');
+
+           const signalElements = ['rsiSignal', 'macdSignal', 'smaSignal', 'bbSignal'];
+
+           
+
+           indicators.forEach((indicator, index) => {
+
+               if (indicatorElements[index]) {
+
+                   indicatorElements[index].textContent = indicator.value;
+
+               }
+
+               const signalElement = document.getElementById(signalElements[index]);
+
+               if (signalElement) {
+
+                   signalElement.textContent = indicator.signal;
+
+               }
+
+           });
+
+       }
+
+ 
+
+       function updateMarketSentiment() {
+
+           const bullishPercent = Math.floor(Math.random() * 40 + 30);
+
+           const bearishPercent = Math.floor(Math.random() * 30 + 20);
+
+           const neutralPercent = 100 - bullishPercent - bearishPercent;
+
+ 
+
+           document.getElementById('bullishPercent').textContent = `${bullishPercent}%`;
+
+           document.getElementById('bearishPercent').textContent = `${bearishPercent}%`;
+
+           document.getElementById('neutralPercent').textContent = `${neutralPercent}%`;
+
+           
+
+           document.getElementById('bullishBar').style.width = `${bullishPercent}%`;
+
+           document.getElementById('bearishBar').style.width = `${bearishPercent}%`;
+
+           document.getElementById('neutralBar').style.width = `${neutralPercent}%`;
+
+ 
+
+           const sentimentElement = document.getElementById('sentimentScore');
+
+           if (bullishPercent > bearishPercent + 10) {
+
+               sentimentElement.textContent = 'Bullish';
+
+               sentimentElement.className = 'px-4 py-2 rounded-full text-sm font-bold bg-green-500 text-white';
+
+           } else if (bearishPercent > bullishPercent + 10) {
+
+               sentimentElement.textContent = 'Bearish';
+
+               sentimentElement.className = 'px-4 py-2 rounded-full text-sm font-bold bg-red-500 text-white';
+
+           } else {
+
+               sentimentElement.textContent = 'Neutral';
+
+               sentimentElement.className = 'px-4 py-2 rounded-full text-sm font-bold bg-gray-500 text-white';
+
+           }
+
+           
+
+           // Update social media metrics
+
+           document.getElementById('twitterMentions').textContent = `${Math.floor(Math.random() * 5000 + 1000).toLocaleString()}`;
+
+           document.getElementById('redditPosts').textContent = `${Math.floor(Math.random() * 500 + 100)}`;
+
+           document.getElementById('newsArticles').textContent = `${Math.floor(Math.random() * 50 + 10)}`;
+
+       }
+
+ 
+
+       function updateFinancialHealth(data) {
+
+           const debtToEquity = (Math.random() * 2).toFixed(2);
+
+           const currentRatio = (Math.random() * 3 + 0.5).toFixed(2);
+
+           const roe = (Math.random() * 30 + 5).toFixed(1);
+
+           const profitMargin = (Math.random() * 25 + 2).toFixed(1);
+
+           
+
+           document.getElementById('debtToEquity').textContent = debtToEquity;
+
+           document.getElementById('currentRatio').textContent = currentRatio;
+
+           document.getElementById('roe').textContent = `${roe}%`;
+
+           document.getElementById('profitMargin').textContent = `${profitMargin}%`;
+
+           
+
+           // Update progress bars
+
+           document.getElementById('debtBar').style.width = `${Math.min(parseFloat(debtToEquity) * 50, 100)}%`;
+
+           document.getElementById('currentBar').style.width = `${Math.min(parseFloat(currentRatio) * 33, 100)}%`;
+
+           document.getElementById('roeBar').style.width = `${Math.min(parseFloat(roe) * 3.33, 100)}%`;
+
+           document.getElementById('profitBar').style.width = `${Math.min(parseFloat(profitMargin) * 4, 100)}%`;
+
+           
+
+           // Calculate overall health score
+
+           const healthScore = Math.floor((parseFloat(roe) + parseFloat(profitMargin) + (parseFloat(currentRatio) * 10) - (parseFloat(debtToEquity) * 10)) / 4);
+
+           const clampedScore = Math.max(0, Math.min(100, healthScore + 50));
+
+           
+
+           document.getElementById('healthScore').textContent = clampedScore;
+
+           document.getElementById('healthScoreCircle').style.strokeDasharray = `${clampedScore}, 100`;
+
+       }
+
+ 
+
+       function updateLastUpdated() {
+
+           const now = new Date();
+
+           document.getElementById('lastUpdated').textContent = `Updated: ${now.toLocaleTimeString()}`;
+
+       }
+
+ 
+
+       function changeTimeframe(timeframe) {
+
+           currentTimeframe = timeframe;
+
+           
+
+           // Update button styles
+
+           document.querySelectorAll('[onclick^="changeTimeframe"]').forEach(btn => {
+
+               btn.className = 'px-3 py-1 bg-gray-100 text-gray-800 rounded text-sm font-medium';
+
+           });
+
+           event.target.className = 'px-3 py-1 bg-blue-100 text-blue-800 rounded text-sm font-medium';
+
+           
+
+           // Recreate chart with new timeframe
+
+           const symbol = document.getElementById('stockSymbolDisplay').textContent;
+
+           if (symbol) {
+
+               createPriceChart(symbol);
+
+           }
+
+       }
+
+ 
+
+       function addToWatchlist() {
+
+           const symbol = document.getElementById('stockSymbol').value.toUpperCase().trim();
+
+           if (!symbol) {
+
+               alert('Please enter a stock symbol first');
+
+               return;
+
+           }
+
+           
+
+           if (watchlist.includes(symbol)) {
+
+               alert('Stock already in watchlist');
+
+               return;
+
+           }
+
+           
+
+           watchlist.push(symbol);
+
+           updateWatchlistDisplay();
+
+           
+
+           // Show success message
+
+           const button = event.target;
+
+           const originalText = button.textContent;
+
+           button.textContent = '✅ Added!';
+
+           button.className = 'bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-medium transition-colors';
+
+           
+
+           setTimeout(() => {
+
+               button.textContent = originalText;
+
+               button.className = 'bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-xl font-medium transition-colors';
+
+           }, 2000);
+
+       }
+
+ 
+
+       function updateWatchlistDisplay() {
+
+           const container = document.getElementById('watchlistContainer');
+
+           
+
+           if (watchlist.length === 0) {
+
+               container.innerHTML = `
+
+                   <div class="text-center text-gray-500 py-8 col-span-full">
+
+                       <div class="text-4xl mb-2">📋</div>
+
+                       <p>Your watchlist is empty. Add stocks to track them here.</p>
+
+                   </div>
+
+               `;
+
+               return;
+
+           }
+
+           
+
+           container.innerHTML = watchlist.map(symbol => {
+
+               const data = stockDatabase[symbol] || generateRandomStock(symbol);
+
+               return `
+
+                   <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 hover:shadow-lg transition-all">
+
+                       <div class="flex justify-between items-start mb-2">
+
+                           <div>
+
+                               <div class="font-bold text-gray-800">${symbol}</div>
+
+                               <div class="text-xs text-gray-600">${data.name}</div>
+
+                           </div>
+
+                           <button onclick="removeFromWatchlist('${symbol}')" class="text-red-500 hover:text-red-700 text-sm">✕</button>
+
+                       </div>
+
+                       <div class="text-lg font-bold text-gray-800">$${data.price.toFixed(2)}</div>
+
+                       <div class="text-sm ${data.change >= 0 ? 'text-green-600' : 'text-red-600'}">
+
+                           ${data.change >= 0 ? '+' : ''}${data.change.toFixed(2)} (${data.changePercent.toFixed(2)}%)
+
+                       </div>
+
+                   </div>
+
+               `;
+
+           }).join('');
+
+       }
+
+ 
+
+       function removeFromWatchlist(symbol) {
+
+           watchlist = watchlist.filter(s => s !== symbol);
+
+           updateWatchlistDisplay();
+
+       }
+
+ 
+
+       function clearWatchlist() {
+
+           if (watchlist.length === 0) return;
+
+           
+
+           if (confirm('Are you sure you want to clear your entire watchlist?')) {
+
+               watchlist = [];
+
+               updateWatchlistDisplay();
+
+           }
+
+       }
+
+ 
+
+       // Allow Enter key to trigger analysis
+
+       document.getElementById('stockSymbol').addEventListener('keypress', function(e) {
+
+           if (e.key === 'Enter') {
+
+               analyzeStock();
+
+           }
+
+       });
+
+ 
+
+       // Update market indices every 30 seconds
+
+       setInterval(updateMarketIndices, 30000);
+
+       
+
+       // Initialize with some demo data
+
+       updateMarketIndices();
+
+   </script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9812573324d7eccd',t:'MTc1ODIxNDIwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
+</html>
